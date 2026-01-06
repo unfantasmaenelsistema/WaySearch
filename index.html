@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mega Buscador Archive.org</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Buscador Universal de Archivos</h1>
+        
+        <div class="search-box">
+            <input type="text" id="query" placeholder="Ej: 'Windows 95' o 'Jazz Music'...">
+            
+            <select id="extension">
+                <option value="">Cualquier formato</option>
+                <optgroup label="Software e Imágenes">
+                    <option value="iso">ISO (Imagen de disco)</option>
+                    <option value="img">IMG (Imagen de disco)</option>
+                    <option value="zip">ZIP (Comprimido)</option>
+                    <option value="rar">RAR (Comprimido)</option>
+                    <option value="exe">EXE (Ejecutable)</option>
+                </optgroup>
+                <optgroup label="Vídeo">
+                    <option value="mp4">MP4</option>
+                    <option value="avi">AVI</option>
+                    <option value="mkv">MKV</option>
+                    <option value="mov">MOV</option>
+                </optgroup>
+                <optgroup label="Audio">
+                    <option value="mp3">MP3</option>
+                    <option value="flac">FLAC (Lossless)</option>
+                    <option value="wav">WAV</option>
+                    <option value="ogg">OGG</option>
+                </optgroup>
+                <optgroup label="Documentos">
+                    <option value="pdf">PDF</option>
+                    <option value="epub">EPUB</option>
+                    <option value="txt">TXT</option>
+                </optgroup>
+            </select>
+
+            <button onclick="searchArchive()">Buscar</button>
+        </div>
+
+        <div id="results" class="results-grid"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

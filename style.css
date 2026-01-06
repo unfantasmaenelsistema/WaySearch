@@ -1,0 +1,184 @@
+/* Configuración General */
+:root {
+    --primary-color: #2c3e50;
+    --accent-color: #3498db;
+    --success-color: #27ae60;
+    --bg-color: #f8f9fa;
+    --text-dark: #333;
+    --card-bg: #ffffff;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+h1 {
+    color: var(--primary-color);
+    margin-bottom: 30px;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+/* Caja de Búsqueda */
+.search-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    margin-bottom: 40px;
+}
+
+input[type="text"] {
+    flex: 2;
+    min-width: 250px;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+select {
+    flex: 1;
+    min-width: 150px;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: white;
+    cursor: pointer;
+}
+
+button {
+    padding: 12px 30px;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.1s;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Grilla de Resultados */
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+/* Tarjetas (Cards) */
+.card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.card img {
+    width: 100%;
+    height: 180px;
+    object-fit: contain;
+    background: #f1f1f1;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.card-content {
+    padding: 15px;
+    flex-grow: 1;
+}
+
+.card h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    /* Limitar a 2 líneas de texto */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card p {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 5px 0;
+}
+
+.card-footer {
+    padding: 15px;
+    background: #fafafa;
+}
+
+.btn-view {
+    display: block;
+    text-align: center;
+    background-color: var(--success-color);
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.btn-view:hover {
+    background-color: #219150;
+}
+
+/* Estados de Carga y Errores */
+.loader {
+    grid-column: 1 / -1;
+    padding: 50px;
+    font-size: 1.2rem;
+    color: var(--accent-color);
+    font-weight: 300;
+}
+
+/* Responsividad para móviles */
+@media (max-width: 600px) {
+    .search-box {
+        flex-direction: column;
+    }
+    
+    input[type="text"], select, button {
+        width: 100%;
+    }
+}
