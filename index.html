@@ -1,51 +1,140 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mega Buscador Archive.org</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WaySearch — Buscador de archivos de Internet Archive</title>
+  <meta name="description" content="Busca software, vídeo, audio y libros en Internet Archive por formato real (ISO, MP4, FLAC, EPUB…) y descarga los archivos directamente.">
+  <meta name="theme-color" content="#0b0d14">
+  <meta property="og:title" content="WaySearch — Buscador de archivos de Internet Archive">
+  <meta property="og:description" content="Busca por formato real y descarga los archivos directamente.">
+  <meta property="og:image" content="img/og.png">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="js/boot.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Buscador Universal de Archivos</h1>
-        
-        <div class="search-box">
-            <input type="text" id="query" placeholder="Ej: 'Windows 95' o 'Jazz Music'...">
-            
-            <select id="extension">
-                <option value="">Cualquier formato</option>
-                <optgroup label="Software e Imágenes">
-                    <option value="iso">ISO (Imagen de disco)</option>
-                    <option value="img">IMG (Imagen de disco)</option>
-                    <option value="zip">ZIP (Comprimido)</option>
-                    <option value="rar">RAR (Comprimido)</option>
-                    <option value="exe">EXE (Ejecutable)</option>
-                </optgroup>
-                <optgroup label="Vídeo">
-                    <option value="mp4">MP4</option>
-                    <option value="avi">AVI</option>
-                    <option value="mkv">MKV</option>
-                    <option value="mov">MOV</option>
-                </optgroup>
-                <optgroup label="Audio">
-                    <option value="mp3">MP3</option>
-                    <option value="flac">FLAC (Lossless)</option>
-                    <option value="wav">WAV</option>
-                    <option value="ogg">OGG</option>
-                </optgroup>
-                <optgroup label="Documentos">
-                    <option value="pdf">PDF</option>
-                    <option value="epub">EPUB</option>
-                    <option value="txt">TXT</option>
-                </optgroup>
-            </select>
+  <header class="top">
+    <a class="brand" href="https://www.unfantasmaenelsistema.com" target="_blank" rel="noopener noreferrer" data-i18n-title="brand_title">
+      <img src="img/logo.png" alt="Un fantasma en el sistema" width="40" height="40">
+      <span><b>WaySearch</b><small data-i18n="tagline">Buscador de archivos de Internet Archive</small></span>
+    </a>
+    <nav class="top-actions">
+      <a class="site-link" href="https://www.unfantasmaenelsistema.com" target="_blank" rel="noopener noreferrer">unfantasmaenelsistema.com</a>
+      <button class="icon-btn" id="langBtn" type="button" data-i18n-title="toggle_lang">EN</button>
+      <button class="icon-btn" id="themeBtn" type="button" data-i18n-title="toggle_theme">☀️</button>
+    </nav>
+  </header>
 
-            <button onclick="searchArchive()">Buscar</button>
+  <main class="wrap">
+    <form class="search" id="searchForm" role="search" autocomplete="off">
+      <div class="search-row">
+        <label class="sr-only" for="q" data-i18n="search_label">Qué buscas</label>
+        <input id="q" name="q" type="search" data-i18n-placeholder="placeholder" placeholder="Ej.: windows 95, jazz, quijote…" maxlength="200">
+        <label class="sr-only" for="format" data-i18n="format">Formato</label>
+        <select id="format" name="format">
+          <option value="" data-i18n="any_format">Cualquier formato</option>
+          <optgroup data-i18n-label="g_software" label="Software e imágenes de disco">
+            <option value="iso">ISO</option><option value="img">IMG</option><option value="zip">ZIP</option>
+            <option value="7z">7Z</option><option value="rar">RAR</option><option value="exe">EXE</option><option value="apk">APK</option>
+          </optgroup>
+          <optgroup data-i18n-label="g_video" label="Vídeo">
+            <option value="mp4">MP4</option><option value="mkv">MKV</option><option value="avi">AVI</option>
+            <option value="mov">MOV</option><option value="webm">WEBM</option><option value="mpeg">MPEG</option>
+          </optgroup>
+          <optgroup data-i18n-label="g_audio" label="Audio">
+            <option value="mp3">MP3</option><option value="flac">FLAC</option><option value="wav">WAV</option>
+            <option value="ogg">OGG</option><option value="opus">OPUS</option>
+          </optgroup>
+          <optgroup data-i18n-label="g_docs" label="Documentos">
+            <option value="pdf">PDF</option><option value="epub">EPUB</option><option value="mobi">MOBI</option>
+            <option value="txt">TXT</option><option value="comic" data-i18n="comic">Cómic (CBR/CBZ)</option>
+          </optgroup>
+        </select>
+        <button class="btn-primary" type="submit" data-i18n="search">Buscar</button>
+      </div>
+
+      <details class="filters" id="filtersBox">
+        <summary data-i18n="more_filters">Más filtros</summary>
+        <div class="filter-grid">
+          <label><span data-i18n="mode">Palabras</span>
+            <select id="mode" name="mode">
+              <option value="all" data-i18n="mode_all">Todas</option>
+              <option value="any" data-i18n="mode_any">Cualquiera</option>
+              <option value="phrase" data-i18n="mode_phrase">Frase exacta</option>
+            </select></label>
+          <label><span data-i18n="scope">Buscar en</span>
+            <select id="scope" name="scope">
+              <option value="all" data-i18n="scope_all">Todo</option>
+              <option value="title" data-i18n="scope_title">Título</option>
+              <option value="creator" data-i18n="scope_creator">Autor</option>
+              <option value="subject" data-i18n="scope_subject">Tema</option>
+              <option value="description" data-i18n="scope_description">Descripción</option>
+            </select></label>
+          <label><span data-i18n="type">Tipo</span>
+            <select id="mediatype" name="mediatype">
+              <option value="" data-i18n="type_any">Cualquiera</option>
+              <option value="software" data-i18n="type_software">Software</option>
+              <option value="movies" data-i18n="type_movies">Vídeo</option>
+              <option value="audio" data-i18n="type_audio">Audio</option>
+              <option value="etree" data-i18n="type_etree">Conciertos</option>
+              <option value="texts" data-i18n="type_texts">Textos</option>
+              <option value="image" data-i18n="type_image">Imágenes</option>
+              <option value="data" data-i18n="type_data">Datos</option>
+            </select></label>
+          <label><span data-i18n="sort">Orden</span>
+            <select id="sort" name="sort">
+              <option value="relevance" data-i18n="sort_relevance">Relevancia</option>
+              <option value="downloads" data-i18n="sort_downloads">Más descargados</option>
+              <option value="newest" data-i18n="sort_newest">Subidos recientemente</option>
+              <option value="year_desc" data-i18n="sort_year_desc">Más modernos</option>
+              <option value="oldest" data-i18n="sort_oldest">Más antiguos</option>
+              <option value="title" data-i18n="sort_title">Título (A-Z)</option>
+            </select></label>
+          <label><span data-i18n="year_from">Año desde</span>
+            <input id="from" name="from" type="number" min="1000" max="2100" placeholder="1980"></label>
+          <label><span data-i18n="year_to">Año hasta</span>
+            <input id="to" name="to" type="number" min="1000" max="2100" placeholder="2000"></label>
+          <label class="check"><input id="downloadable" name="downloadable" type="checkbox" checked>
+            <span data-i18n="only_downloadable">Solo descargables (sin préstamo)</span></label>
         </div>
+      </details>
+    </form>
 
-        <div id="results" class="results-grid"></div>
-    </div>
-    <script src="script.js"></script>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+    <div class="results" id="results"></div>
+    <nav class="pager" id="pager" aria-label="Páginas"></nav>
+  </main>
+
+  <footer class="foot">
+    <p data-i18n="legal">Internet Archive es una biblioteca digital sin ánimo de lucro. Respeta los derechos de autor y la licencia de cada elemento. WaySearch solo consulta su API pública desde tu navegador.</p>
+    <p>
+      <a href="https://www.unfantasmaenelsistema.com" target="_blank" rel="noopener noreferrer">Un fantasma en el sistema</a> ·
+      <a href="https://github.com/unfantasmaenelsistema/WaySearch" target="_blank" rel="noopener noreferrer" data-i18n="source">Código</a> ·
+      <a href="https://archive.org" target="_blank" rel="noopener noreferrer">archive.org</a> · MIT
+    </p>
+  </footer>
+
+  <template id="cardTpl">
+    <article class="card">
+      <a class="thumb" target="_blank" rel="noopener noreferrer"><img alt="" loading="lazy" referrerpolicy="no-referrer"></a>
+      <div class="card-body">
+        <div class="badges"></div>
+        <h3><a class="title" target="_blank" rel="noopener noreferrer"></a></h3>
+        <p class="meta"></p>
+        <div class="card-actions">
+          <button type="button" class="btn-files"></button>
+          <a class="btn-link details" target="_blank" rel="noopener noreferrer"></a>
+        </div>
+        <div class="files" hidden></div>
+      </div>
+    </article>
+  </template>
+
+  <script src="js/query.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
